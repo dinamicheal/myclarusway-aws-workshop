@@ -22,7 +22,7 @@ def main_post():
    x = request.form['number']
 
    if not x.isdecimal():
-      return render_template('index.html', devoloper_name='Dina', not_valid=True)
+      return render_template('index.html', devoloper_name='Dina', not_valid=False)
    number = int(x)
    if not 0 < number < 4000:
       return render_template('index.html', name='Dina', not_valid=True)
@@ -30,19 +30,6 @@ def main_post():
 
 
 
-
-# @app.route('/')
-# def home():
-#     return render_template('index.html', name='Dina')
-
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     if request.method == 'POST':
-#         user_name=request.form['username']
-#         return render_template('secure.html', user=user_name)
-#     else:
-#         return render_template('login.html')
-
 if __name__ == '__main__':
-    #app.run(debug=True)
-    app.run('0.0.0.0', port=80)
+    app.run(debug=True)
+    #app.run('0.0.0.0', port=80)
