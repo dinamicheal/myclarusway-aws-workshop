@@ -62,11 +62,10 @@ Resources:
           yum install python3 -y
           pip3 install flask
           cd /home/ec2-user/
-          wget https://raw.githubusercontent.com/talha-01/aws-workshop/master/001-roman-numerals-converter/app.py
-          mkdir templates
+          wget https://raw.githubusercontent.com/dinamicheal/myclarusway-aws-workshop/master/001-roman-numerals-converter/roman-python.py
           cd templates
-          wget https://raw.githubusercontent.com/talha-01/aws-workshop/master/001-roman-numerals-converter/templates/index.html
-          wget https://raw.githubusercontent.com/talha-01/aws-workshop/master/001-roman-numerals-converter/templates/result.html
+          wget https://raw.githubusercontent.com/dinamicheal/myclarusway-aws-workshop/master/001-roman-numerals-converter/templates/index.html
+          wget https://raw.githubusercontent.com/dinamicheal/myclarusway-aws-workshop/master/001-roman-numerals-converter/templates/result.html
           cd ..
           python3 app.py
 
