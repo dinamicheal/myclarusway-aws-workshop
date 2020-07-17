@@ -14,7 +14,7 @@ def roman_letters(num) :
 
 @app.route('/', methods=['GET'])
 def main_get():
-   return render_template('index.html', devoloper_name='Dina',not_valid = False)
+   return render_template('index.html', developer_name='Dina',not_valid = False)
 
 
 @app.route('/' ,methods=['POST'])
@@ -22,11 +22,11 @@ def main_post():
    x = request.form['number']
 
    if not x.isdecimal():
-      return render_template('index.html', devoloper_name='Dina', not_valid=False)
+      return render_template('index.html', developer_name='Dina', not_valid=True)
    number = int(x)
    if not 0 < number < 4000:
-      return render_template('index.html', name='Dina', not_valid=True)
-   return render_template('result.html', number_decimal=number, number_roman=roman_letters(number), devoloper_name='Dina')
+      return render_template('index.html',developer_name='Dina', not_valid=True)
+   return render_template('result.html', number_decimal=number, number_roman=roman_letters(number), developer_name='Dina')
 
 
 
