@@ -32,7 +32,7 @@ Resources:
       LaunchTemplateData:
         ImageId: ami-08f3d892de259504d
         InstanceType: t2.micro
-        KeyName: Dina.training
+        KeyName: key1
         SecurityGroupIds: 
           - !GetAtt WebServersSecurityGroup.GroupId
         TagSpecifications: 
