@@ -30,7 +30,7 @@ Resources:
     Type: "AWS::EC2::LaunchTemplate"
     Properties:
       LaunchTemplateData:
-        ImageId: ami-09d95fab7fff3776c
+        ImageId: ami-08f3d892de259504d
         InstanceType: t2.micro
         KeyName: Dina.training
         SecurityGroupIds: 
@@ -65,12 +65,12 @@ Resources:
       SecurityGroups:
         - !GetAtt ALBSecurityGroup.GroupId
       Subnets:
-        - subnet-c41ba589
-        - subnet-077c9758
-        - subnet-3ccd235a
-        - subnet-ed49bccc
-        - subnet-8d8dbfb3
-        - subnet-3246e63c
+        - subnet-21f6cb1f
+        - subnet-29dc3676
+        - subnet-72bd043f
+        - subnet-95f80cb4
+        - subnet-c20fafcc
+        - subnet-fd54ba9b
       Type: application
   ALBListener:
     Type: "AWS::ElasticLoadBalancingV2::Listener"
