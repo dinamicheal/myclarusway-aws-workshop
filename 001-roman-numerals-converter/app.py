@@ -21,4 +21,5 @@ def main_post():
        return render_template('index.html', developer_name='Dina', not_valid=True)
     return render_template('result.html', number_decimal=number, number_roman=roman_conv(number), devoloper_name='Dina')
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=80)
+    #app.run('0.0.0.0', port=80)
+    app.run(debug=True)
