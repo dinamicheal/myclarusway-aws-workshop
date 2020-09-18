@@ -45,7 +45,7 @@ Resources:
                 pip3 install flask_mysql
                 echo "${MyDBURI}" > /home/ec2-user/dbserver.endpoint
                 
-                FOLDER="https://raw.githubusercontent.com/dinamicheal/myclarusway-aws-workshop/master/004-phonebook-web-application/app.py
+                FOLDER="https://raw.githubusercontent.com/dinamicheal/myclarusway-aws-workshop/master/004-phonebook-web-application/app.py"
                 curl -s --create-dirs -o "/home/ec2-user/templates/index.html" -L "$FOLDER"templates/index.html
                 curl -s --create-dirs -o "/home/ec2-user/templates/add-update.html" -L "$FOLDER"templates/add-update.html
                 curl -s --create-dirs -o "/home/ec2-user/templates/delete.html" -L "$FOLDER"templates/delete.html
@@ -70,11 +70,12 @@ Resources:
         - !GetAtt ALBSecurityGroup.GroupId
       Subnets:
         - subnet-fd54ba9b
-        - subnet-fd54ba9b
-        - subnet-fd54ba9b
-        - subnet-fd54ba9b
-        - subnet-fd54ba9b
-        - subnet-fd54ba9b
+        - subnet-c20fafcc
+        - subnet-95f80cb4
+        - subnet-72bd043f
+        - subnet-29dc3676
+        - subnet-21f6cb1f
+        
       Type: application
   ALBListener:
     Type: "AWS::ElasticLoadBalancingV2::Listener"

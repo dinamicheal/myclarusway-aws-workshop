@@ -1,0 +1,115 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: >
+  CloudFormation Template for Kittens Carousel Static Website on EC2.
+  This template creates Application Load Balancer 
+  with Auto Scaling Group of Amazon Linux 2 (ami-026dea5602e368e96) EC2 Instances. 
+  EC2 instances are placed within WebServerSecurityGroup 
+  which allows http (80) connections only from ALBSecurityGroup,
+  and Application Load Balancer is placed within ALBSecurityGroup 
+  which allows http (80) connections from anywhere.
+  WebServerASG Auto Scaling Group is using the WebServerLT Launch Template
+  in order to spin up instances needed, and WebServerLT Launch Template configured
+  to download Kittens Carousel Static Website files from Github repository,
+  then deploy on Apache Web Server.
+Resources:
+  ALBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable HTTP for Application Load Balancer
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+  WebServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable HTTP for Apache Web Server
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          SourceSecurityGroupId: !GetAtt ALBSecurityGroup.GroupId
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+  WebServerLT:
+    Type: AWS::EC2::LaunchTemplate
+    Properties: 
+      LaunchTemplateData:
+        ImageId: ami-09d95fab7fff3776c
+        InstanceType: t2.micro
+        KeyName: key1
+        SecurityGroupIds: 
+          - !GetAtt WebServerSecurityGroup.GroupId
+        TagSpecifications: 
+          - ResourceType: instance
+            Tags: 
+              - Key: Name
+                Value: !Sub Web Server of ${AWS::StackName} Stack 
+        UserData:
+          Fn::Base64: |
+              #! /bin/bash
+              yum update -y
+              yum install httpd -y
+              FOLDER="https://raw.githubusercontent.com/dinmicheal/myclarusway-aws-workshop/master/static-web/"
+              curl -s --create-dirs -o "/var/www/html/index.html" -L "$FOLDER"index.html
+              curl -s --create-dirs -o "/var/www/html/cat0.jpg" -L "$FOLDER"cat0.jpg
+              curl -s --create-dirs -o "/var/www/html/cat1.jpg" -L "$FOLDER"cat1.jpg
+              curl -s --create-dirs -o "/var/www/html/cat2.jpg" -L "$FOLDER"cat2.jpg
+              systemctl start httpd
+              systemctl enable httpd
+  WebServerTG:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties: 
+      Port: 80
+      Protocol: HTTP
+      TargetType: instance
+      VpcId: !GetAtt WebServerSecurityGroup.VpcId
+  ApplicationLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      IpAddressType: ipv4
+      Scheme: internet-facing
+      SecurityGroups: 
+        - !GetAtt ALBSecurityGroup.GroupId
+      Subnets:
+        - subnet-fd54ba9b
+        - subnet-c20fafcc
+        - subnet-95f80cb4
+        - subnet-72bd043f
+        - subnet-29dc3676
+        - subnet-21f6cb1f
+      Type: application
+  ALBListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties: 
+      DefaultActions: 
+        - TargetGroupArn: !Ref WebServerTG
+          Type: forward
+      LoadBalancerArn: !Ref ApplicationLoadBalancer
+      Port: 80
+      Protocol: HTTP
+  WebServerASG:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties: 
+      AvailabilityZones: 
+        !GetAZs ""
+      DesiredCapacity: 2
+      HealthCheckGracePeriod: 90
+      HealthCheckType: ELB
+      LaunchTemplate: 
+        LaunchTemplateId: !Ref WebServerLT
+        Version: !GetAtt WebServerLT.LatestVersionNumber 
+      MaxSize: 3
+      MinSize: 1
+      TargetGroupARNs: 
+        - !Ref WebServerTG
+Outputs:
+  WebsiteURL:
+    Value: !Sub 
+      - http://${ALBAddress}
+      - ALBAddress: !GetAtt ApplicationLoadBalancer.DNSName
+    Description: Kittens Carousel Application Load Balancer URL
