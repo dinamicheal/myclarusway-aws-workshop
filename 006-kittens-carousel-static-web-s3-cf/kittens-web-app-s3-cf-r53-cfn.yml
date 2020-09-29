@@ -54,7 +54,7 @@ Resources:
               #! /bin/bash
               yum update -y
               yum install httpd -y
-              FOLDER="https://raw.githubusercontent.com/dinmicheal/myclarusway-aws-workshop/master/static-web/"
+              FOLDER="https://raw.githubusercontent.com/dinamicheal/myclarusway-aws-workshop/master/006-kittens-carousel-static-web-s3-cf/static-web/"
               curl -s --create-dirs -o "/var/www/html/index.html" -L "$FOLDER"index.html
               curl -s --create-dirs -o "/var/www/html/cat0.jpg" -L "$FOLDER"cat0.jpg
               curl -s --create-dirs -o "/var/www/html/cat1.jpg" -L "$FOLDER"cat1.jpg
