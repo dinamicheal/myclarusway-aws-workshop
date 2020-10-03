@@ -1,1 +1,0 @@
-# myclarusway-aws-workshop
