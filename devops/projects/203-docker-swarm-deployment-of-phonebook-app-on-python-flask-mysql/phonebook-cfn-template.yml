@@ -193,7 +193,7 @@ Resources:
                   --image-scanning-configuration scanOnPush=false \
                   --image-tag-mutability MUTABLE \
                   --region ${AWS::Region}
-              docker build --force-rm -t "${ECR_REGISTRY}/${APP_REPO_NAME}:latest" ${GITHUB_REPO}
+              docker build --force-rm -t "${ECR_REGISTRY}/${APP_REPO_NAME}:latest" ${GITHUB_REPO}#master
               docker push "${ECR_REGISTRY}/${APP_REPO_NAME}:latest"
               mkdir -p /home/ec2-user/phonebook
               cd /home/ec2-user/phonebook
@@ -206,13 +206,13 @@ Resources:
               docker-compose config | docker stack deploy --with-registry-auth -c - phonebook
             - ECR_REGISTRY: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com
               APP_REPO_NAME: clarusway-repo/phonebook-app
-              GITHUB_REPO: https://github.com/callahan-cw/project-203.git
-              GIT_FILE_URL: https://raw.githubusercontent.com/callahan-cw/project-203/master/
+              GITHUB_REPO: https://github.com/dinamicheal/myclarusway-aws-workshop/tree/master/devops/projects/203-docker-swarm-deployment-of-phonebook-app-on-python-flask-mysql.git
+              GIT_FILE_URL: https://raw.githubusercontent.com/dinamicheal/myclarusway-aws-workshop/master/devops/projects/203-docker-swarm-deployment-of-phonebook-app-on-python-flask-mysql/
 
   DockerManager2:
     Type: "AWS::EC2::Instance"
     DependsOn:
-        - DockerManager1
+        - DockerManage
     Properties:
       LaunchTemplate:
         LaunchTemplateId: !Ref ManagersLT
